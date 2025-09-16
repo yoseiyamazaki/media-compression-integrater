@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/@yoseiyamazaki/media-compression-integrater.svg)](https://www.npmjs.com/package/@yoseiyamazaki/media-compression-integrater)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-`Media Compression Integrater`は、`ffmpeg`を使用して画像や動画を圧縮するための、柔軟で強力なコマンドラインツールです。ffmpegのコマンドを直接記述した独自の圧縮プロファイルを定義でき、出力を完全にコントロールすることが可能です。
+`Media Compression Integrater`は、`ffmpeg`を使用して画像や動画を圧縮するためのコマンドラインツールです。ffmpegのコマンドを直接記述した独自の圧縮プロファイルを定義でき、出力を完全にコントロールし、設定を共有することが可能です。
 
 ## 主な機能
 

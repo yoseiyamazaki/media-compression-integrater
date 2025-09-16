@@ -4,15 +4,15 @@ const DEFAULT_CONFIG_FILENAME = 'compress.config.json';
 
 const defaultConfig = {
   profiles: {
+    webm: {
+      options: "-c:v libvpx -b:v 2M -crf 10",
+      extension: ".webm",
+      sourceExtensions: [".mp4", ".mov"]
+    },
     hevc: {
       options: "-c:v libx265 -crf 28 -preset medium -tag:v hvc1",
       extension: ".mp4",
       sourceExtensions: [".mp4", ".mov"]
-    },
-    h264: {
-        options: "-c:v libx264 -crf 30 -preset fast -b:v 800k",
-        extension: ".mp4",
-        sourceExtensions: [".mp4", ".mov"]
     },
     webp: {
       options: "-quality 80",

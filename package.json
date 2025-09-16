@@ -1,6 +1,6 @@
 {
   "name": "@yoseiyamazaki/media-compression-integrater",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "main": "src/index.js",
   "bin": {
     "mci": "bin/cli.js"
