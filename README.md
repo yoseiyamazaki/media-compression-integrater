@@ -14,17 +14,31 @@ ffmpegのコマンドを直接記述した独自の圧縮プロファイルを�
 
 ## インストール
 
-まず、お使いのシステムに [Node.js](https://nodejs.org/ja/) と [ffmpeg](https://ffmpeg.org/download.html) がインストールされていることを確認してください。
+### 必要条件
 
-次に、このリポジトリをクローンし、コマンドラインツールをリンクします。
+お使いのシステムに [Node.js](https://nodejs.org/ja/) と [ffmpeg](https://ffmpeg.org/download.html) がインストールされている必要があります。
+
+### npm (GitHub Packages) からインストール
+
+このツールはnpmパッケージとして公開されています。以下のコマンドでグローバルにインストールすることで、システムのどこからでも `mci` コマンドが利用可能になります。
 
 ```bash
-# git clone https://github.com/your-username/media-compression-integrater.git # (もしリポジトリがあればURLに置き換えてください)
+npm install -g @yoseiyamazaki/media-compression-integrater
+```
+
+`npm link` を使う必要はありません。インストールが完了すれば、すぐに `mci` コマンドを使用できます。
+
+### 開発者向け: ソースからインストール
+
+開発やカスタマイズを目的とする場合は、リポジトリをクローンしてローカルでセットアップすることも可能です。
+
+```bash
+git clone https://github.com/yoseiyamazaki/media-compression-integrater.git
 cd media-compression-integrater
 npm install
 npm link
 ```
-`npm link` を実行することで、`mci`コマンドがシステム全体で利用可能になります。
+この場合、`npm link` を実行することで、ローカルのソースコードに基づいた `mci` コマンドがシステム全体で利用可能になります。
 
 ## 使い方
 
@@ -84,7 +98,10 @@ mci
 
 ## アンインストール
 
-コマンドラインツールをシステムから削除するには、プロジェクトディレクトリで以下のコマンドを実行します。
+グローバルインストールした `mci` コマンドをシステムから削除するには、以下のコマンドを実行します。
 
 ```bash
-npm unlink
+npm uninstall -g @yoseiyamazaki/media-compression-integrater
+```
+
+ソースから `npm link` を使用してインストールした場合は、プロジェクトディレクトリで `npm unlink` を実行してください。
