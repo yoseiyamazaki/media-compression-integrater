@@ -1,6 +1,6 @@
 {
   "name": "@yoseiyamazaki/media-compression-integrater",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "src/index.js",
   "bin": {
     "mci": "bin/cli.js"
@@ -16,7 +16,7 @@
     "image"
   ],
   "author": "yoseiyamazaki",
-  "license": "ISC",
+  "license": "MIT",
   "type": "commonjs",
   "description": "A flexible, profile-based media compression tool using ffmpeg.",
   "repository": {

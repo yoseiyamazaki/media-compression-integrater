@@ -1,6 +1,9 @@
-# Media compression integrater (メディア圧縮統合ツール)
+# Media Compression Integrater
 
-`Media compression integrater`は、`ffmpeg`を使用して画像や動画を圧縮するための、柔軟で強力なコマンドラインツールです。ffmpegのコマンドを直接記述した独自の圧縮プロファイルを定義でき、出力を完全にコントロールすることが可能です。
+[![npm version](https://img.shields.io/npm/v/@yoseiyamazaki/media-compression-integrater.svg)](https://www.npmjs.com/package/@yoseiyamazaki/media-compression-integrater)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+`Media Compression Integrater`は、`ffmpeg`を使用して画像や動画を圧縮するための、柔軟で強力なコマンドラインツールです。ffmpegのコマンドを直接記述した独自の圧縮プロファイルを定義でき、出力を完全にコントロールすることが可能です。
 
 ## 主な機能
 
@@ -11,51 +14,123 @@
 -   **スマートなファイル命名**: 変換元と変換先の拡張子が同じ場合、ファイルの上書きを防ぐためにファイル名が自動的に変更されます (例: `video.mp4` -> `video.hevc.mp4`)。
 -   **同一階層への出力**: デフォルトでは、圧縮されたファイルは元ファイルと同じディレクトリに保存されます。
 
-## インストールとローカルでの実行
+## 必須要件
 
-まず、お使いのシステムに [Node.js](https://nodejs.org/ja/) と [ffmpeg](https://ffmpeg.org/download.html) がインストールされていることを確認してください。
+-   [Node.js](https://nodejs.org/ja/)
+-   [ffmpeg](https://ffmpeg.org/download.html)
 
-次に、このリポジトリをクローンし、依存関係をインストールします。
+本ツールを使用する前に、お使いのシステムに上記がインストールされていることを確認してください。
+
+## インストール
+
+### グローバルインストール (推奨)
+
+コマンドラインツールとしてどこからでも利用したい場合は、グローバルにインストールします。
 
 ```bash
-# git clone https://github.com/yoseiyamazaki/media-compression-integrater.git
+npm install -g @yoseiyamazaki/media-compression-integrater
+```
+
+### ローカルインストール
+
+特定のプロジェクトでのみ利用する場合は、開発依存関係としてインストールします。
+
+```bash
+npm install -D @yoseiyamazaki/media-compression-integrater
+```
+この場合、コマンドの実行は `npx mci` のように `npx` を接頭辞として使用します。
+
+## 使い方
+
+### 1. 設定ファイルの初期化
+
+まず、プロジェクトディレクトリで以下のコマンドを実行し、設定ファイル `compress.config.json` を生成します。
+
+```bash
+# グローバルインストールの場合
+mci init
+
+# ローカルインストールの場合
+npx mci init
+```
+
+### 2. 設定ファイルの編集
+
+生成された `compress.config.json` を開き、圧縮プロファイルを定義します。各プロファイルでは、対象の拡張子 (`targetExtensions`) と `ffmpeg` のコマンド (`command`) を指定します。
+
+**設定例 (`compress.config.json`):**
+```json
+{
+  "profiles": {
+    "hevc": {
+      "targetExtensions": [".mov", ".mp4"],
+      "command": "-c:v libx265 -crf 28 -c:a aac -b:a 128k"
+    },
+    "webp": {
+      "targetExtensions": [".png", ".jpg", ".jpeg"],
+      "command": "-c:v libwebp -lossless 0 -q:v 80"
+    }
+  }
+}
+```
+
+### 3. 圧縮の実行
+
+ファイルを指定して圧縮を実行します。
+
+```bash
+# hevcプロファイルを使って動画を圧縮
+mci my_video.mp4 -p hevc
+
+# webpプロファイルを使って画像を圧縮
+mci my_image.png -p webp
+```
+
+プロファイルを指定しない場合、対象の拡張子に一致する**すべてのプロファイル**が実行されます。
+
+```bash
+mci my_video.mp4
+```
+
+### オプション
+
+-   `-p, --profile <name>`: 使用する圧縮プロファイルを指定します。
+-   `-o, --output <path>`: 圧縮ファイルの出力先ディレクトリを指定します。デフォルトは入力元と同じディレクトリです。
+-   `-c, --config <path>`: 使用する設定ファイルのパスを指定します。デフォルトは `./compress.config.json` です。
+
+<!-- ## 開発者向け情報
+
+### ローカル環境での実行
+
+リポジトリをクローンして、ローカルで実行することも可能です。
+
+```bash
+git clone https://github.com/yoseiyamazaki/media-compression-integrater.git
 cd media-compression-integrater
 npm install
 ```
 
-### 実行方法
-
-#### 方法1: ローカルから直接実行する
-プロジェクトのルートディレクトリから、`node`コマンドで直接スクリプトを実行できます。
+`node`コマンドで直接スクリプトを実行します。
 
 ```bash
 node bin/cli.js init
 node bin/cli.js my_video.mp4 -p hevc
 ```
 
-#### 方法2: npm link を使用する (任意)
-`mci`コマンドをシステム全体で利用できるようにしたい場合は、`npm link`を実行します。これは開発時や頻繁に利用する場合に便利な**任意**のステップです。
-
-```bash
-npm link
-```
-`npm link` を実行すると、`mci`というグローバルコマンドが登録されます。
-
-## パッケージの公開と利用
-
-このパッケージはnpm public registryに公開されるように設定されています。
-
-### 公開方法
-`main`ブランチにプッシュすると、GitHub Actionsによって自動的にパッケージが公開されます。
-
-### パッケージの利用方法 (インストール)
-以下のコマンドを実行するだけで、どのプロジェクトからでもこのパッケージをインストールできます。
-
-```bash
-npm install @yoseiyamazaki/media-compression-integrater
-```
-
 ## アンインストール
-`npm link` を使用した場合、以下のコマンドでグローバルコマンドを削除できます。
+
+### グローバルインストールの場合
+
 ```bash
-npm unlink @yoseiyamazaki/media-compression-integrater
+npm uninstall -g @yoseiyamazaki/media-compression-integrater
+```
+
+### ローカルインストールの場合
+
+```bash
+npm uninstall @yoseiyamazaki/media-compression-integrater
+``` -->
+
+## ライセンス
+
+このプロジェクトは [MIT License](https://opensource.org/licenses/MIT) の下で公開されています。
