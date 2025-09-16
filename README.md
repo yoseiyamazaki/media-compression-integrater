@@ -94,6 +94,13 @@ mci my_image.png -p webp
 mci my_video.mp4
 ```
 
+また、ファイルだけでなくフォルダのパスを指定することも可能です。その場合、指定されたフォルダ配下のすべてのファイルが圧縮対象となります。
+
+```bash
+# hevcプロファイルを使ってフォルダ内の動画をすべて圧縮
+mci path/to/your/directory -p hevc
+```
+
 ### オプション
 
 -   `-p, --profile <name>`: 使用する圧縮プロファイルを指定します。
