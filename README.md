@@ -1,7 +1,6 @@
 # Media compression integrater (メディア圧縮統合ツール)
 
-`Media compression integrater`は、`ffmpeg`を使用して画像や動画を圧縮するコマンドラインツールです。
-ffmpegのコマンドを直接記述した独自の圧縮プロファイルを定義でき、出力をコントロール、共有することが可能です。
+`Media compression integrater`は、`ffmpeg`を使用して画像や動画を圧縮するための、柔軟で強力なコマンドラインツールです。ffmpegのコマンドを直接記述した独自の圧縮プロファイルを定義でき、出力を完全にコントロールすることが可能です。
 
 ## 主な機能
 
@@ -12,96 +11,51 @@ ffmpegのコマンドを直接記述した独自の圧縮プロファイルを�
 -   **スマートなファイル命名**: 変換元と変換先の拡張子が同じ場合、ファイルの上書きを防ぐためにファイル名が自動的に変更されます (例: `video.mp4` -> `video.hevc.mp4`)。
 -   **同一階層への出力**: デフォルトでは、圧縮されたファイルは元ファイルと同じディレクトリに保存されます。
 
-## インストール
+## インストールとローカルでの実行
 
-### 必要条件
+まず、お使いのシステムに [Node.js](https://nodejs.org/ja/) と [ffmpeg](https://ffmpeg.org/download.html) がインストールされていることを確認してください。
 
-お使いのシステムに [Node.js](https://nodejs.org/ja/) と [ffmpeg](https://ffmpeg.org/download.html) がインストールされている必要があります。
-
-### npm (GitHub Packages) からインストール
-
-このツールはnpmパッケージとして公開されています。以下のコマンドでグローバルにインストールすることで、システムのどこからでも `mci` コマンドが利用可能になります。
+次に、このリポジトリをクローンし、依存関係をインストールします。
 
 ```bash
-npm install -g @yoseiyamazaki/media-compression-integrater
-```
-
-`npm link` を使う必要はありません。インストールが完了すれば、すぐに `mci` コマンドを使用できます。
-
-### 開発者向け: ソースからインストール
-
-開発やカスタマイズを目的とする場合は、リポジトリをクローンしてローカルでセットアップすることも可能です。
-
-```bash
-git clone https://github.com/yoseiyamazaki/media-compression-integrater.git
+# git clone https://github.com/yoseiyamazaki/media-compression-integrater.git
 cd media-compression-integrater
 npm install
+```
+
+### 実行方法
+
+#### 方法1: ローカルから直接実行する
+プロジェクトのルートディレクトリから、`node`コマンドで直接スクリプトを実行できます。
+
+```bash
+node bin/cli.js init
+node bin/cli.js my_video.mp4 -p hevc
+```
+
+#### 方法2: npm link を使用する (任意)
+`mci`コマンドをシステム全体で利用できるようにしたい場合は、`npm link`を実行します。これは開発時や頻繁に利用する場合に便利な**任意**のステップです。
+
+```bash
 npm link
 ```
-この場合、`npm link` を実行することで、ローカルのソースコードに基づいた `mci` コマンドがシステム全体で利用可能になります。
+`npm link` を実行すると、`mci`というグローバルコマンドが登録されます。
 
-## 使い方
+## パッケージの公開と利用
 
-### 1. 設定ファイルの初期化
+このパッケージはnpm public registryに公開されるように設定されています。
 
-使い始める前に、まずデフォルトの設定ファイルを生成します。
+### 公開方法
+`main`ブランチにプッシュすると、GitHub Actionsによって自動的にパッケージが公開されます。
+
+### パッケージの利用方法 (インストール)
+以下のコマンドを実行するだけで、どのプロジェクトからでもこのパッケージをインストールできます。
 
 ```bash
-mci init
+npm install @yoseiyamazaki/media-compression-integrater
 ```
-
-これを実行すると、`compress.config.json`ファイルが作成されます。各プロファイルには`sourceExtensions`が追加され、どの拡張子のファイルを変換対象とするかを定義できます。
-
-```json
-{
-  "profiles": {
-    "hevc": {
-      "options": "-c:v libx265 -crf 28 -preset medium -tag:v hvc1",
-      "extension": ".mp4",
-      "sourceExtensions": [".mp4", ".mov"]
-    },
-    "webp": {
-      "options": "-quality 80",
-      "extension": ".webp",
-      "sourceExtensions": [".png", ".jpg", ".jpeg"]
-    }
-  }
-}
-```
-
-### 2. ファイルの圧縮
-
-コマンドの引数はすべて任意です。柔軟な実行が可能です。
-
-#### 特定のファイルを特定のプロファイルで圧縮:
-```bash
-mci /path/to/my/image.png -p webp
-```
-
-#### 特定のディレクトリ内の全ファイルを、特定のプロファイルで圧縮:
-```bash
-mci /path/to/my/media_folder -p hevc
-```
-
-#### カレントディレクトリの全ファイルを、**すべてのプロファイル**で圧縮:
-`-p`オプションを指定しない場合、`sourceExtensions`に一致するすべてのファイルに対して、設定されているすべてのプロファイルが実行されます。
-```bash
-mci
-```
-
-### オプション
-
--   `[input]`: (任意) 圧縮したいソースファイルまたはディレクトリのパス。省略した場合はカレントディレクトリが対象になります。
--   `-p`, `--profile`: (任意) 圧縮に使用するプロファイル名。省略した場合は定義されているすべてのプロファイルが実行されます。
--   `-o`, `--output`: (任意) 出力先のディレクトリを指定します。省略した場合、ソースファイルと同じディレクトリに保存されます。
--   `-c`, `--config`: (任意) カスタム設定ファイルのパスを指定します。
 
 ## アンインストール
-
-グローバルインストールした `mci` コマンドをシステムから削除するには、以下のコマンドを実行します。
-
+`npm link` を使用した場合、以下のコマンドでグローバルコマンドを削除できます。
 ```bash
-npm uninstall -g @yoseiyamazaki/media-compression-integrater
-```
-
-ソースから `npm link` を使用してインストールした場合は、プロジェクトディレクトリで `npm unlink` を実行してください。
+npm unlink @yoseiyamazaki/media-compression-integrater
