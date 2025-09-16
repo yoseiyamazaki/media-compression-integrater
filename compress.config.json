@@ -1,0 +1,24 @@
+{
+  "profiles": {
+    "hevc": {
+      "options": "-c:v libx265 -crf 28 -preset medium -tag:v hvc1",
+      "extension": ".mp4",
+      "sourceExtensions": [".mp4", ".mov"]
+    },
+    "h264": {
+      "options": "-c:v libx264 -crf 30 -preset fast -b:v 800k",
+      "extension": ".mp4",
+      "sourceExtensions": [".mp4", ".mov"]
+    },
+    "webp": {
+      "options": "-quality 80",
+      "extension": ".webp",
+      "sourceExtensions": [".png", ".jpg", ".jpeg"]
+    },
+    "avif": {
+      "options": "-crf 30 -speed 4",
+      "extension": ".avif",
+      "sourceExtensions": [".png", ".jpg", ".jpeg"]
+    }
+  }
+}

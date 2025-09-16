@@ -1,0 +1,34 @@
+{
+  "name": "@yoseiyamazaki/media-compression-integrater",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "bin": {
+    "mci": "bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ffmpeg",
+    "media",
+    "compression",
+    "video",
+    "image"
+  ],
+  "author": "yoseiyamazaki",
+  "license": "ISC",
+  "type": "commonjs",
+  "description": "A flexible, profile-based media compression tool using ffmpeg.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yoseiyamazaki/media-compression-integrater.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "dependencies": {
+    "fluent-ffmpeg": "^2.1.3",
+    "fs-extra": "^11.3.2",
+    "yargs": "^17.7.2"
+  }
+}
