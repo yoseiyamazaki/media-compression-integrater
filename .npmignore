@@ -1,8 +1,0 @@
-# Exclude directories
-.github/
-
-# Exclude sample files
-compress.config.json
-
-# Exclude OS-specific files
-.DS_Store
